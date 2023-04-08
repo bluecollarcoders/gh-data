@@ -18,6 +18,8 @@ jobs:
   build:
     needs: test
     runs-on: ubuntu-latest
+    outputs:  
+      script-file:  
     steps:
       - name: Get code
         uses: actions/checkout@v3
@@ -25,11 +27,13 @@ jobs:
         run: npm ci
       - name: Build website
         run: npm run build
+      - name: Publish JS filename
+        run:  find dist/assets/*.json-type f -execdir echo '{}' ';'
       - name: Upload Artifact
         uses: actions/upload-artifact@v3
         with:
           name: dist-files
-          path: |
+          path: dist
             # dist
             # package.json
   deploy:
